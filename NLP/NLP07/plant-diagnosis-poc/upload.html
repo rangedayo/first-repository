@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>식물 진단 - 사진 업로드</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1><a href="index.html">🌱 식물닥터</a></h1>
+            </div>
+            <nav class="nav">
+                <a href="index.html">홈</a>
+                <a href="#guide">가이드</a>
+                <a href="#contact">문의</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <section class="progress-section">
+        <div class="container">
+            <div class="progress-bar">
+                <div class="progress-step active">
+                    <div class="step-circle">1</div>
+                    <span>사진 업로드</span>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle">2</div>
+                    <span>분석 중</span>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle">3</div>
+                    <span>결과 확인</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upload Section -->
+    <section class="upload-section">
+        <div class="container">
+            <div class="upload-content">
+                <h2>식물 사진을 업로드해주세요</h2>
+                <p>문제가 있는 부위를 명확히 보여주는 사진을 선택해주세요</p>
+
+                <!-- Upload Area -->
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📷</div>
+                    <div class="upload-text">
+                        <p><strong>클릭하여 사진 선택</strong></p>
+                        <p>또는</p>
+                        <p>드래그 앤 드롭</p>
+                    </div>
+                    <p class="upload-info">지원 형식: JPG, PNG (최대 10MB)</p>
+                    <input type="file" id="fileInput" accept="image/jpeg,image/png" style="display: none;">
+                </div>
+
+                <!-- Preview Area -->
+                <div class="preview-area" id="previewArea" style="display: none;">
+                    <div class="preview-content">
+                        <img id="previewImage" alt="미리보기">
+                        <div class="preview-info">
+                            <p id="fileName"></p>
+                            <p id="fileSize"></p>
+                            <button class="btn-secondary" onclick="resetUpload()" type="button">다시 선택</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tips -->
+                <div class="tips">
+                    <h3>💡 촬영 팁</h3>
+                    <ul>
+                        <li>자연광에서 촬영하세요</li>
+                        <li>문제 부위를 명확히 보여주세요</li>
+                        <li>흔들림 없이 선명하게 촬영하세요</li>
+                        <li>잎과 줄기가 모두 보이도록 촬영하세요</li>
+                    </ul>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn-secondary" onclick="goHome()" type="button">이전</button>
+                    <button class="btn-primary" id="analyzeBtn" onclick="startAnalysis()" disabled type="button">분석 시작</button>
+                </div>
+
+                <!-- 간단한 상태 표시 -->
+                <div id="statusInfo" style="margin-top: 20px; padding: 10px; background: #f8f9fa; border-radius: 5px; text-align: center;">
+                    <p>📝 브라우저 콘솔(F12)에서 상세 로그를 확인하세요</p>
+                </div>
+                
+                <div style="margin-top: 20px; text-align: center;">
+                    <button onclick="forceNavigate()" type="button" style="font-size: 14px; padding: 10px 20px; background: #dc3545; color: white; border: none; border-radius: 5px; margin: 5px; cursor: pointer;">🚀 강제로 결과 페이지 이동</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 로딩 모달 제거됨 -->
+
+    <script src="js/clear-simulation-data.js"></script>
+    <script src="js/upload-simple.js"></script>
+    <script src="js/real-plant-api.js"></script>
+    <script>
+        // 실제 API만 사용하는 분석 함수로 오버라이드 (시뮬레이션 제거)
+        function startAnalysis() {
+            if (typeof startAnalysisRealAPIOnly === 'function') {
+                startAnalysisRealAPIOnly();
+            } else {
+                showError('실제 API 클라이언트를 로드할 수 없습니다. 페이지를 새로고침하세요.');
+            }
+        }
+        
+        // 강제 네비게이션 함수 추가
+        function forceNavigate() {
+            addDebugLog('강제 네비게이션 실행');
+            window.open("result.html", "_self");
+        }
+        
+        // 에러 표시 함수 (없는 경우를 위해)
+        function showError(message) {
+            alert(message);
+        }
+    </script>
+</body>
+</html>

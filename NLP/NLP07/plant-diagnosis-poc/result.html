@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>진단 결과 - 식물닥터</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1><a href="index.html">🌱 식물닥터</a></h1>
+            </div>
+            <nav class="nav">
+                <a href="index.html">홈</a>
+                <a href="#guide">가이드</a>
+                <a href="#contact">문의</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Progress Bar -->
+    <section class="progress-section">
+        <div class="container">
+            <div class="progress-bar">
+                <div class="progress-step completed">
+                    <div class="step-circle">✓</div>
+                    <span>사진 업로드</span>
+                </div>
+                <div class="progress-step completed">
+                    <div class="step-circle">✓</div>
+                    <span>분석 완료</span>
+                </div>
+                <div class="progress-step active">
+                    <div class="step-circle">3</div>
+                    <span>결과 확인</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Result Section -->
+    <section class="result-section">
+        <div class="container">
+            <h2>진단 결과</h2>
+            
+            <!-- Main Result -->
+            <div class="result-main">
+                <div class="result-image">
+                    <img id="resultImage" alt="분석된 이미지">
+                </div>
+                <div class="result-status">
+                    <div class="status-badge" id="statusBadge">
+                        <span class="status-icon" id="statusIcon">🚨</span>
+                        <span class="status-text" id="statusText">과습 의심</span>
+                    </div>
+                    <div class="confidence">
+                        <span>신뢰도: </span>
+                        <span id="confidenceScore">85%</span>
+                    </div>
+                    <div class="symptoms">
+                        <h4>주요 증상:</h4>
+                        <ul id="symptomsList">
+                            <li>잎이 노랗게 변함</li>
+                            <li>흙이 계속 젖어있음</li>
+                            <li>뿌리 부근 곰팡이 냄새</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cause Analysis -->
+            <div class="analysis-section">
+                <h3>🔍 원인 분석</h3>
+                <div class="causes" id="causesList">
+                    <div class="cause-item">
+                        <div class="cause-header">
+                            <span class="cause-rank">1순위</span>
+                            <span class="cause-name">물 과다 공급</span>
+                            <span class="cause-probability">90%</span>
+                        </div>
+                        <p class="cause-description">물을 너무 자주 주거나 한 번에 많이 준 경우입니다.</p>
+                    </div>
+                    <div class="cause-item">
+                        <div class="cause-header">
+                            <span class="cause-rank">2순위</span>
+                            <span class="cause-name">배수 불량</span>
+                            <span class="cause-probability">70%</span>
+                        </div>
+                        <p class="cause-description">화분 바닥의 배수구가 막혔거나 배수층이 부족한 경우입니다.</p>
+                    </div>
+                    <div class="cause-item">
+                        <div class="cause-header">
+                            <span class="cause-rank">3순위</span>
+                            <span class="cause-name">뿌리썩음병 초기</span>
+                            <span class="cause-probability">40%</span>
+                        </div>
+                        <p class="cause-description">과습으로 인한 뿌리썩음병 초기 증상일 가능성이 있습니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Solutions -->
+            <div class="solutions-section">
+                <h3>💡 해결 방법</h3>
+                
+                <div class="solution-category">
+                    <h4>즉시 조치</h4>
+                    <div class="solution-list" id="immediateSolutions">
+                        <div class="solution-item">
+                            <div class="solution-priority">우선순위 1</div>
+                            <div class="solution-content">
+                                <h5>물 주기 중단</h5>
+                                <p>흙이 완전히 마를 때까지 물 주기를 중단하세요</p>
+                                <span class="solution-duration">기간: 1-2주</span>
+                            </div>
+                        </div>
+                        <div class="solution-item">
+                            <div class="solution-priority">우선순위 1</div>
+                            <div class="solution-content">
+                                <h5>고인 물 제거</h5>
+                                <p>화분 받침의 고인 물을 즉시 제거하세요</p>
+                                <span class="solution-duration">기간: 즉시</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="solution-category">
+                    <h4>장기 관리</h4>
+                    <div class="solution-list" id="longtermSolutions">
+                        <div class="solution-item">
+                            <div class="solution-priority">우선순위 2</div>
+                            <div class="solution-content">
+                                <h5>물 주기 패턴 조정</h5>
+                                <p>흙 표면이 2-3cm 말랐을 때 물을 주세요</p>
+                                <span class="solution-frequency">빈도: 주 1-2회</span>
+                            </div>
+                        </div>
+                        <div class="solution-item">
+                            <div class="solution-priority">우선순위 3</div>
+                            <div class="solution-content">
+                                <h5>배수 환경 개선</h5>
+                                <p>배수구 확인 및 배수층 개선을 진행하세요</p>
+                                <span class="solution-frequency">1회성 작업</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prevention Tips -->
+            <div class="prevention-section">
+                <h3>🛡️ 예방 방법</h3>
+                <ul class="prevention-list">
+                    <li>물 주기 전 흙 상태 확인</li>
+                    <li>배수가 잘 되는 화분 사용</li>
+                    <li>통풍이 잘 되는 곳에 배치</li>
+                    <li>정기적인 상태 점검</li>
+                </ul>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="result-actions">
+                <button class="btn-secondary" onclick="goToUpload()">다시 진단하기</button>
+                <button class="btn-primary" onclick="viewGuide()">식물 관리 가이드 보기</button>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/clear-simulation-data.js"></script>
+    <script src="js/analysis.js"></script>
+</body>
+</html>

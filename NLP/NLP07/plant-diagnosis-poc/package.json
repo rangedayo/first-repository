@@ -1,0 +1,37 @@
+{
+  "name": "plant-diagnosis-poc",
+  "version": "1.0.0",
+  "description": "식물 상태 진단 웹 애플리케이션 PoC",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "python -m http.server 8000",
+    "build": "echo 'PoC 버전은 빌드가 필요하지 않습니다.'",
+    "test": "echo 'PoC 테스트는 수동으로 진행합니다.'"
+  },
+  "keywords": [
+    "plant",
+    "diagnosis",
+    "ai",
+    "image-analysis",
+    "poc",
+    "web-app"
+  ],
+  "author": "Plant Doctor Team",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/plant-diagnosis-poc.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/plant-diagnosis-poc/issues"
+  },
+  "homepage": "https://github.com/your-username/plant-diagnosis-poc#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

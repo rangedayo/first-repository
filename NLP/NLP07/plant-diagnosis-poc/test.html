@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>테스트 페이지</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            max-width: 600px; 
+            margin: 0 auto; 
+        }
+        button { 
+            padding: 15px 30px; 
+            margin: 10px; 
+            font-size: 16px; 
+            cursor: pointer; 
+            border: none; 
+            border-radius: 5px; 
+            background: #007bff; 
+            color: white; 
+        }
+        button:hover { background: #0056b3; }
+        .status { 
+            padding: 15px; 
+            margin: 10px 0; 
+            background: #f8f9fa; 
+            border-radius: 5px; 
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 식물 진단 테스트 페이지</h1>
+    
+    <div class="status">
+        <h3>현재 상태:</h3>
+        <p id="status">페이지 로드됨</p>
+    </div>
+    
+    <h3>네비게이션 테스트:</h3>
+    <button onclick="goToIndex()">메인 페이지로 이동</button>
+    <button onclick="goToUpload()">업로드 페이지로 이동</button>
+    <button onclick="goToResult()">결과 페이지로 이동</button>
+    
+    <h3>기능 테스트:</h3>
+    <button onclick="testLocalStorage()">localStorage 테스트</button>
+    <button onclick="testConsole()">콘솔 테스트</button>
+    <button onclick="testAlert()">알림 테스트</button>
+    
+    <script>
+        console.log('테스트 페이지 로드됨');
+        
+        function updateStatus(message) {
+            document.getElementById('status').textContent = message;
+            console.log('상태 업데이트:', message);
+        }
+        
+        function goToIndex() {
+            updateStatus('메인 페이지로 이동 중...');
+            window.location.href = 'index.html';
+        }
+        
+        function goToUpload() {
+            updateStatus('업로드 페이지로 이동 중...');
+            window.location.href = 'upload.html';
+        }
+        
+        function goToResult() {
+            updateStatus('결과 페이지로 이동 중...');
+            // 테스트 데이터 생성
+            const testResult = {
+                status: '테스트 결과',
+                icon: '🧪',
+                confidence: 100,
+                symptoms: ['테스트 증상'],
+                causes: [{ name: '테스트 원인', probability: 100, description: '테스트입니다.' }],
+                timestamp: new Date().toISOString(),
+                imageUrl: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjNGE3YzU5Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+7YWM7Iqk7Yq4IOydtOuvuOyngDwvdGV4dD48L3N2Zz4='
+            };
+            localStorage.setItem('analysisResult', JSON.stringify(testResult));
+            window.location.href = 'result.html';
+        }
+        
+        function testLocalStorage() {
+            try {
+                localStorage.setItem('test', 'success');
+                const result = localStorage.getItem('test');
+                updateStatus('localStorage 테스트 성공: ' + result);
+            } catch (error) {
+                updateStatus('localStorage 테스트 실패: ' + error.message);
+            }
+        }
+        
+        function testConsole() {
+            console.log('콘솔 테스트 메시지');
+            console.error('콘솔 에러 테스트');
+            console.warn('콘솔 경고 테스트');
+            updateStatus('콘솔 테스트 완료 (F12로 확인)');
+        }
+        
+        function testAlert() {
+            alert('알림 테스트 성공!');
+            updateStatus('알림 테스트 완료');
+        }
+        
+        // 페이지 로드 완료
+        window.addEventListener('load', function() {
+            updateStatus('모든 기능 준비 완료');
+        });
+    </script>
+</body>
+</html>
