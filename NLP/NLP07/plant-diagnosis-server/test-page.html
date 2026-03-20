@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌱 Plant Diagnosis API 테스트</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .status-section {
+            margin-bottom: 30px;
+        }
+        
+        .status-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            margin: 10px 0;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #ddd;
+        }
+        
+        .status-item.success {
+            border-left-color: #4CAF50;
+            background: #f1f8e9;
+        }
+        
+        .status-item.error {
+            border-left-color: #f44336;
+            background: #ffebee;
+        }
+        
+        .status-item.loading {
+            border-left-color: #2196F3;
+            background: #e3f2fd;
+        }
+        
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .badge-success {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .badge-error {
+            background: #f44336;
+            color: white;
+        }
+        
+        .badge-loading {
+            background: #2196F3;
+            color: white;
+        }
+        
+        .upload-section {
+            margin: 30px 0;
+        }
+        
+        .upload-area {
+            border: 3px dashed #ddd;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .upload-area:hover {
+            border-color: #4CAF50;
+            background: #f9f9f9;
+        }
+        
+        .upload-area.dragover {
+            border-color: #4CAF50;
+            background: #f1f8e9;
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #666;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px 5px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+        }
+        
+        .btn-secondary:hover {
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .result-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            display: none;
+        }
+        
+        .result-item {
+            margin: 10px 0;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .result-label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .result-value {
+            color: #666;
+        }
+        
+        .log-section {
+            margin-top: 30px;
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #333;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 5px;
+        }
+        
+        .image-preview {
+            max-width: 300px;
+            max-height: 300px;
+            border-radius: 10px;
+            margin: 15px 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌱 Plant Diagnosis API</h1>
+            <p>Plant.id (Kindwise) 기반 식물 진단 서비스 테스트</p>
+        </div>
+        
+        <div class="content">
+            <!-- 서버 상태 섹션 -->
+            <div class="status-section">
+                <h2 class="section-title">📊 서버 상태</h2>
+                
+                <div class="status-item loading" id="server-status">
+                    <span>🖥️ 로컬 서버 (http://localhost:3001)</span>
+                    <span class="status-badge badge-loading">확인 중...</span>
+                </div>
+                
+                <div class="status-item loading" id="plantid-status">
+                    <span>🌿 Plant.id API 연결</span>
+                    <span class="status-badge badge-loading">확인 중...</span>
+                </div>
+            </div>
+            
+            <!-- 이미지 업로드 섹션 -->
+            <div class="upload-section">
+                <h2 class="section-title">📷 식물 이미지 진단</h2>
+                
+                <div class="upload-area" id="upload-area">
+                    <div class="upload-icon">📸</div>
+                    <h3>식물 이미지를 드래그하거나 클릭하여 업로드</h3>
+                    <p>JPG, PNG 파일 지원 (최대 10MB)</p>
+                    <input type="file" class="file-input" id="file-input" accept="image/*">
+                </div>
+                
+                <div class="progress-bar" id="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn" onclick="checkServerConnection()">🔌 서버 연결 확인</button>
+                    <button class="btn btn-secondary" onclick="testWithSampleImage()">🧪 샘플 이미지 테스트</button>
+                </div>
+            </div>
+            
+            <!-- 결과 섹션 -->
+            <div class="result-section" id="result-section">
+                <h2 class="section-title">🔬 진단 결과</h2>
+                <div id="result-content"></div>
+            </div>
+            
+            <!-- 로그 섹션 -->
+            <div class="log-section" id="log-section">
+                <div style="color: #fff; margin-bottom: 10px; font-weight: bold;">📋 실시간 로그</div>
+                <div id="log-content">시스템 초기화 중...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SERVER_URL = 'http://localhost:3001';
+        let selectedFile = null;
+        
+        // 로그 함수
+        function addLog(message, type = 'info') {
+            const logContent = document.getElementById('log-content');
+            const timestamp = new Date().toLocaleTimeString();
+            const colors = {
+                info: '#00ff00',
+                error: '#ff4444',
+                warning: '#ffaa00',
+                success: '#44ff44'
+            };
+            
+            logContent.innerHTML += `<div style="color: ${colors[type]}">[${timestamp}] ${message}</div>`;
+            logContent.scrollTop = logContent.scrollHeight;
+        }
+        
+        // 서버 상태 확인
+        async function checkServerStatus() {
+            addLog('🔍 서버 상태 확인 중...', 'info');
+            
+            try {
+                const response = await fetch(`${SERVER_URL}/api/health`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    updateStatusItem('server-status', 'success', '✅ 정상');
+                    addLog(`✅ 서버 연결 성공: ${data.message}`, 'success');
+                    return true;
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                updateStatusItem('server-status', 'error', '❌ 오류');
+                addLog(`❌ 서버 연결 실패: ${error.message}`, 'error');
+                return false;
+            }
+        }
+        
+        // Plant.id API 상태 확인
+        async function checkPlantIdStatus() {
+            addLog('🌿 Plant.id API 상태 확인 중...', 'info');
+            
+            try {
+                const response = await fetch(`${SERVER_URL}/api/plant-id-status`);
+                const data = await response.json();
+                
+                if (response.ok && data.status === 'ok') {
+                    updateStatusItem('plantid-status', 'success', '✅ 정상');
+                    addLog(`✅ Plant.id API 연결 성공: ${data.message}`, 'success');
+                    return true;
+                } else {
+                    updateStatusItem('plantid-status', 'error', '❌ 오류');
+                    addLog(`❌ Plant.id API 오류: ${data.message}`, 'error');
+                    return false;
+                }
+            } catch (error) {
+                updateStatusItem('plantid-status', 'error', '❌ 오류');
+                addLog(`❌ Plant.id API 확인 실패: ${error.message}`, 'error');
+                return false;
+            }
+        }
+        
+        // 상태 아이템 업데이트
+        function updateStatusItem(id, status, text) {
+            const item = document.getElementById(id);
+            const badge = item.querySelector('.status-badge');
+            
+            item.className = `status-item ${status}`;
+            badge.className = `status-badge badge-${status}`;
+            badge.textContent = text;
+        }
+        
+        // 진행률 업데이트
+        function updateProgress(percent) {
+            const progressBar = document.getElementById('progress-bar');
+            const progressFill = document.getElementById('progress-fill');
+            
+            if (percent > 0) {
+                progressBar.style.display = 'block';
+                progressFill.style.width = percent + '%';
+            } else {
+                progressBar.style.display = 'none';
+                progressFill.style.width = '0%';
+            }
+        }
+        
+        // 파일 업로드 처리
+        function setupFileUpload() {
+            const uploadArea = document.getElementById('upload-area');
+            const fileInput = document.getElementById('file-input');
+            
+            // 클릭 이벤트
+            uploadArea.addEventListener('click', () => {
+                fileInput.click();
+            });
+            
+            // 파일 선택 이벤트
+            fileInput.addEventListener('change', (e) => {
+                handleFile(e.target.files[0]);
+            });
+            
+            // 드래그 앤 드롭
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                handleFile(e.dataTransfer.files[0]);
+            });
+        }
+        
+        // 파일 처리
+        function handleFile(file) {
+            if (!file) return;
+            
+            if (!file.type.startsWith('image/')) {
+                addLog('❌ 이미지 파일만 업로드 가능합니다.', 'error');
+                return;
+            }
+            
+            if (file.size > 10 * 1024 * 1024) {
+                addLog('❌ 파일 크기가 10MB를 초과합니다.', 'error');
+                return;
+            }
+            
+            selectedFile = file;
+            addLog(`📁 파일 선택됨: ${file.name} (${Math.round(file.size / 1024)}KB)`, 'info');
+            
+            // 이미지 미리보기
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                showImagePreview(e.target.result);
+            };
+            reader.readAsDataURL(file);
+            
+            // 자동 진단 시작
+            setTimeout(() => {
+                diagnoseImage();
+            }, 1000);
+        }
+        
+        // 이미지 미리보기
+        function showImagePreview(src) {
+            const uploadArea = document.getElementById('upload-area');
+            uploadArea.innerHTML = `
+                <img src="${src}" class="image-preview" alt="업로드된 이미지">
+                <p>🔍 진단을 시작합니다...</p>
+            `;
+        }
+        
+        // 이미지 진단
+        async function diagnoseImage() {
+            if (!selectedFile) {
+                addLog('❌ 먼저 이미지를 선택하세요.', 'error');
+                return;
+            }
+            
+            addLog('🔬 식물 진단 시작...', 'info');
+            updateProgress(10);
+            
+            try {
+                // Base64 변환
+                const base64 = await fileToBase64(selectedFile);
+                updateProgress(30);
+                
+                addLog('📡 Plant.id API 호출 중...', 'info');
+                updateProgress(50);
+                
+                // API 호출
+                const response = await fetch(`${SERVER_URL}/api/diagnose-base64`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        image: base64,
+                        filename: selectedFile.name
+                    })
+                });
+                
+                updateProgress(80);
+                const data = await response.json();
+                
+                if (data.success) {
+                    updateProgress(100);
+                    addLog('✅ 진단 완료!', 'success');
+                    showDiagnosisResult(data.result);
+                } else {
+                    throw new Error(data.error);
+                }
+                
+            } catch (error) {
+                addLog(`❌ 진단 실패: ${error.message}`, 'error');
+                updateProgress(0);
+            }
+        }
+        
+        // 파일을 Base64로 변환
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        // 진단 결과 표시
+        function showDiagnosisResult(result) {
+            const resultSection = document.getElementById('result-section');
+            const resultContent = document.getElementById('result-content');
+            
+            let html = `
+                <div class="result-item">
+                    <div class="result-label">🏥 진단 상태</div>
+                    <div class="result-value">${result.icon} ${result.status} (신뢰도: ${result.confidence}%)</div>
+                </div>
+            `;
+            
+            if (result.symptoms && result.symptoms.length > 0) {
+                html += `
+                    <div class="result-item">
+                        <div class="result-label">🔍 발견된 증상</div>
+                        <div class="result-value">
+                            ${result.symptoms.map(s => `• ${s.name} (${s.probability}%)`).join('<br>')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (result.causes && result.causes.length > 0) {
+                html += `
+                    <div class="result-item">
+                        <div class="result-label">🎯 원인 분석</div>
+                        <div class="result-value">
+                            ${result.causes.map(c => `• ${c.name} (${c.probability}%)`).join('<br>')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            if (result.treatments) {
+                if (result.treatments.immediate && result.treatments.immediate.length > 0) {
+                    html += `
+                        <div class="result-item">
+                            <div class="result-label">🚨 즉시 조치사항</div>
+                            <div class="result-value">
+                                ${result.treatments.immediate.map(t => `• ${t.title}: ${t.description}`).join('<br>')}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                if (result.treatments.longterm && result.treatments.longterm.length > 0) {
+                    html += `
+                        <div class="result-item">
+                            <div class="result-label">🌱 장기 관리방법</div>
+                            <div class="result-value">
+                                ${result.treatments.longterm.map(t => `• ${t.title}: ${t.description}`).join('<br>')}
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            if (result.plantInfo) {
+                html += `
+                    <div class="result-item">
+                        <div class="result-label">🌿 식물 정보</div>
+                        <div class="result-value">
+                            ${result.plantInfo.name} (${result.plantInfo.probability}%)<br>
+                            ${result.plantInfo.scientificName ? `학명: ${result.plantInfo.scientificName}` : ''}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            html += `
+                <div class="result-item">
+                    <div class="result-label">ℹ️ 분석 정보</div>
+                    <div class="result-value">
+                        제공: ${result.provider}<br>
+                        분석 시간: ${new Date(result.timestamp).toLocaleString()}
+                    </div>
+                </div>
+            `;
+            
+            resultContent.innerHTML = html;
+            resultSection.style.display = 'block';
+            
+            // 결과 섹션으로 스크롤
+            resultSection.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // 서버 연결 확인
+        async function checkServerConnection() {
+            addLog('🔌 서버 연결 테스트 시작...', 'info');
+            
+            const serverOk = await checkServerStatus();
+            if (serverOk) {
+                await checkPlantIdStatus();
+            }
+        }
+        
+        // 샘플 이미지 테스트
+        function testWithSampleImage() {
+            addLog('🧪 샘플 이미지로 테스트 시작...', 'info');
+            
+            // 최소 크기 테스트 이미지 (1x1 픽셀)
+            const sampleBase64 = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/2wBDAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQH/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwA/8A8A';
+            
+            // 가상 파일 객체 생성
+            fetch(sampleBase64)
+                .then(res => res.blob())
+                .then(blob => {
+                    selectedFile = new File([blob], 'sample-plant.jpg', { type: 'image/jpeg' });
+                    showImagePreview(sampleBase64);
+                    setTimeout(() => {
+                        diagnoseImage();
+                    }, 1000);
+                });
+        }
+        
+        // 초기화
+        document.addEventListener('DOMContentLoaded', () => {
+            addLog('🌱 Plant Diagnosis API 테스트 페이지 로드됨', 'success');
+            setupFileUpload();
+            
+            // 자동으로 서버 상태 확인
+            setTimeout(() => {
+                checkServerConnection();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
