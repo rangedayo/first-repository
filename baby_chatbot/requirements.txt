@@ -1,0 +1,33 @@
+# 영유아 헬스케어 챗봇 의존성 패키지
+
+# 웹 인터페이스
+streamlit>=1.28.0
+
+# LangChain 관련
+langchain>=0.1.0
+langchain-openai>=0.0.5
+langchain-community>=0.0.10
+langchain-core>=0.1.0
+langchain-text-splitters>=0.0.1
+langchain-chroma>=0.1.0
+
+# OpenAI
+openai>=1.10.0
+
+# 벡터 데이터베이스
+chromadb>=0.4.0
+
+# 토큰 계산
+tiktoken>=0.5.0
+
+# 데이터 처리
+pandas>=2.0.0
+numpy>=1.24.0
+
+# 유틸리티
+python-dotenv>=1.0.0
+pathlib2>=2.3.7
+
+# 선택적 의존성 (성능 향상)
+sentence-transformers>=2.2.0  # 대안 임베딩 모델용
+faiss-cpu>=1.7.0  # 대안 벡터 DB용 (선택사항)
