@@ -25,8 +25,8 @@ predict라는 엔드포인트를 만들어서 사용자가 이미지를 업로�
 
 예를 들어, 사과 잎 이미지를 넣었을 때 apple___healthy와 같은 결과가 반환된다.
 
-![사과 잎 추론 결과](test_images/inference_leaf_apple.jpg)
-![블루베리 잎 추론 결과](test_images/inference_leaf_blueberry.jpg)
+![사과 잎 추론 결과](test_images/inference_leaf_apple.png)
+![블루베리 잎 추론 결과](test_images/inference_leaf_blueberry.png)
 ![state_dic 비교 결과](test_images/state_dict.png)
 
 
